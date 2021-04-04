@@ -54,11 +54,33 @@ app.post('/account', (request, response) => {
 
 app.use(verifyIfExistsAccountCPF);
 
+app.get('/account', (request, response) => {
+  const { customer } = request;
+
+  return response.json(customer);
+});
+
 app.get('/statement', (request, response) => {
   const { customer } = request;
 
   return response.json(customer.statement);
 });
+
+
+
+app.get('/statement/date', (request, response) => {
+  const { customer } = request;
+  const { date } = request.query;
+
+  const dateFormat = new Date(date + ' 00:00').toDateString();
+
+  const statement = customer.statement.filter(
+    statement => statement.created_at.toDateString() === dateFormat
+  );
+
+  return response.json(statement);
+});
+
 
 app.post('/deposit', (request, response) => {
   const { description, amount } = request.body;
@@ -96,6 +118,36 @@ app.post('/withdraw', (request, response) => {
 
     return response.status(201).send()
 });
+
+app.patch('/account', (request, response) => {
+  const { name } = request.body;
+  const { customer } = request;
+
+  customer.name = name;
+
+  return response.status(201).send();
+});
+
+app.get('/accounts', (request, response) => {
+  return response.json({ customers });
+});
+
+app.delete('/account', (request, response) => {
+  const { customer } = request;
+
+  if (!customer) customers.splice(customer, 1);
+
+  return response.status(200).json({ customers });
+});
+
+app.get('/balance', (request, response) => {
+  const { customer } = request;
+
+  const balance = getBalance(customer.statement);
+
+  return response.json({ balance });
+});
+
 
 app.listen(3333, () => {
   console.log('🚀 Server running in port 3333');
