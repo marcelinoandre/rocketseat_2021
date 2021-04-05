@@ -57,6 +57,14 @@ Usar `new Date(deadline)` irá realizar a transformação da string "ANO-MÊS-DI
 
 ### PUT `/todos/:id`
 
-A rota deve receber, pelo header da requisição, uma propriedade `username` contendo o username do usuário e receber as propriedades `title` e `deadline` dentro do corpo. É preciso alterar **apenas** o `title` e o `deadline` da tarefa que possua o `id` igual ao `id` presente nos parâmetros da rota.
+A rota deve receber, pelo header da requisição, uma propriedade `username` contendo o username do usuário e receber as propriedades `title` e `deadline` dentro do corpo. É preciso alterar **apenas** o `title` e o `deadline` da tarefa que possua o `id` igual ao `id` presente nos parâmetros da rota.  
+
+### PATCH /todos/:id/done
+A rota deve receber, pelo header da requisição, uma propriedade username contendo o username do usuário e alterar a propriedade done para true no todo que possuir um id igual ao id presente nos parâmetros da rota.  
+
+### DELETE /todos/:id
+A rota deve receber, pelo header da requisição, uma propriedade username contendo o username do usuário e excluir o todo que possuir um id igual ao id presente nos parâmetros da rota.
+
+
 
 ---

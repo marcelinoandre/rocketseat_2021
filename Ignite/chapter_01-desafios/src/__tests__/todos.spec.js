@@ -5,12 +5,10 @@ const app = require('../');
 
 describe('Todos', () => {
   it("should be able to list all user's todo", async () => {
-    const userResponse = await request(app)
-      .post('/users')
-      .send({
-        name: 'John Doe',
-        username: 'user1'
-      });
+    const userResponse = await request(app).post('/users').send({
+      name: 'John Doe',
+      username: 'user1'
+    });
 
     const todoDate = new Date();
 
@@ -26,11 +24,7 @@ describe('Todos', () => {
       .get('/todos')
       .set('username', userResponse.body.username);
 
-    expect(response.body).toEqual(
-      expect.arrayContaining([
-        todoResponse.body
-      ]),
-    )
+    expect(response.body).toEqual(expect.arrayContaining([todoResponse.body]));
   });
 
   it('should be able to create a new todo', async () => {

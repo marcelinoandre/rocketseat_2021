@@ -66,8 +66,6 @@ app.get('/statement', (request, response) => {
   return response.json(customer.statement);
 });
 
-
-
 app.get('/statement/date', (request, response) => {
   const { customer } = request;
   const { date } = request.query;
@@ -80,7 +78,6 @@ app.get('/statement/date', (request, response) => {
 
   return response.json(statement);
 });
-
 
 app.post('/deposit', (request, response) => {
   const { description, amount } = request.body;
@@ -108,15 +105,15 @@ app.post('/withdraw', (request, response) => {
   if (balance < amount)
     return response.status(400).json({ error: 'Insufficient funds!' });
 
-    const statementOperation = {
-      amount,
-      created_at: new Date(),
-      type: 'debit'
-    };
+  const statementOperation = {
+    amount,
+    created_at: new Date(),
+    type: 'debit'
+  };
 
-    customer.statement.push(statementOperation)
+  customer.statement.push(statementOperation);
 
-    return response.status(201).send()
+  return response.status(201).send();
 });
 
 app.patch('/account', (request, response) => {
@@ -147,7 +144,6 @@ app.get('/balance', (request, response) => {
 
   return response.json({ balance });
 });
-
 
 app.listen(3333, () => {
   console.log('🚀 Server running in port 3333');

@@ -38,13 +38,13 @@ app.post('/users', (request, response) => {
   };
 
   users.push(user);
-  return response.status(201).send();
+  return response.status(201).json(user);
 });
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
   const { todos } = request.user;
 
-  return response.json({ todos });
+  return response.json(todos);
 });
 
 app.post('/todos', checksExistsUserAccount, (request, response) => {
@@ -61,7 +61,7 @@ app.post('/todos', checksExistsUserAccount, (request, response) => {
 
   todos.push(todo);
 
-  return response.status(201).send();
+  return response.status(201).json(todo);
 });
 
 app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
@@ -71,18 +71,38 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
 
   const index = todos.findIndex(item => item.id === id);
 
+  if (index < 0) return response.status(404).json({ error: 'Todo not found' });
+
   todos[index].title = title;
   todos[index].deadline = new Date(deadline);
 
-  return response.json({ message: 'Todo updated :)' });
+  return response.status(201).json(todos[index]);
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { todos } = request.user;
+  const { id } = request.params;
+
+  const index = todos.findIndex(item => item.id === id);
+
+  if (index < 0) return response.status(404).json({ error: 'Todo not found' });
+
+  todos[index].done = true;
+
+  return response.status(201).json(todos[index]);
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { todos } = request.user;
+  const { id } = request.params;
+
+  const index = todos.findIndex(item => item.id === id);
+
+  if (index < 0) return response.status(404).json({ error: 'Todo not found' });
+
+  todos.splice(index, 1);
+
+  return response.status(204).send();
 });
 
 module.exports = app;
